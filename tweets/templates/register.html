@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="register_block">
+    <form action="register_new_user/" method="POST">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th>User Name </th>
+                <td><input type="text" name="uname" /></td>
+            </tr>
+            <tr>
+                <th>First Name </th>
+                <td><input type="text" name="fname" /></td>
+            </tr>
+            <tr>
+                <th>Last Name </th>
+                <td><input type="text" name="lname" /></td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td><input type="text" name="email" /></td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td><input type="password" name="password" /></td>
+            </tr>
+        </table>
+        <input type="submit" name="Submit Button" value="Register" />
+    </form>
+</div>
+{% endblock %}

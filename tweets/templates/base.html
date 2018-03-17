@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Header block start (Add header things like navigation etc) -->
+        <div class="header-block"></div>
+
+        <!-- Content block start (Add content of the application) -->
+        <div class="content-block">
+            <div class="message-block">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- Footer block start (Use this place to add footer to application like trade mark information) -->
+        <div class="footer-block"></div>
+    </div>
+</body>
+</html>

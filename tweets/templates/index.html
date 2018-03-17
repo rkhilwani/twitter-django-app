@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div id='add_tweets'>
+    <form action="add/" method="POST">
+        {% csrf_token %}
+        <input type="textarea" name="tweet" id="tweet" />
+        <input type="Submit" name="Add Tweet" value="Add Tweet"></input>
+    </form>
+</div>
+<div id="show_tweets">
+    {% for post in all %}
+        <span>
+            <p>{{post.ptext}}</p><br/>
+            <span>{{post.cdate}}</span>
+        </span>
+    {% endfor %}
+</div>
+{% endblock %}
