@@ -9,10 +9,13 @@
 </div>
 <div id="show_tweets">
     {% for post in all %}
-        <span>
-            <p>{{post.ptext}}</p><br/>
-            <span>{{post.cdate}}</span>
-        </span>
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text">{{post.ptext}}</p>
+                <a href="#" class="card-link">post_user</a>
+                <a href="#" class="card-link">{{post.cdate}}</a>
+            </div>
+        </div>
     {% endfor %}
 </div>
 {% endblock %}

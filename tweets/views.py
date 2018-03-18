@@ -34,11 +34,19 @@ def create_user(req):
     return HttpResponseRedirect('/')
 
 def login_user(req):
+    if req.method == 'GET':
+        context = {'title' : 'Login'}
+        return render(req, 'login.html', context=context)
+
     user = User.objects.filter(username=req.POST['uname'])
+    print user
+    print type(user)
     if user:
-        if user.password == req.POST['password']:
+        if user[0].password == req.POST['password']:
             return HttpResponseRedirect('/')
         else:
             messages.add_message(req, messages.ERROR, 'Username or password does not match')
+            return HttpResponseRedirect('/login/')
     else:
         messages.add_message(req, messages.ERROR, 'Username not found')
+        return HttpResponseRedirect('/login/')
