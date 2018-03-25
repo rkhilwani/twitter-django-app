@@ -9,19 +9,32 @@ from django.contrib import messages
 # Create your views here.
 def add_tweet(req):
     data = req.POST['tweet']
-    post = Post()
-    post.ptext = data
-    post.save()
-    return HttpResponseRedirect('/')
+    username = req.session.get('username')
+    if username:
+        user = User.objects.filter(username=username)
+        if user:
+            post = Post()
+            post.ptext = data
+            post.user = user[0]
+            post.save()
+            return HttpResponseRedirect('/')
+        else:
+            return HttpResponseRedirect('/register_new_user/')
+    else:
+        return HttpResponseRedirect('/login/')
 
 def show_tweets(req):
     all_posts = Post.objects.all()
-    context = {'all' : all_posts, 'title' : 'My Tweets'}
+    username = req.session.get('username')
+    context = {'all' : all_posts, 'title' : 'My Tweets', 'user' : ''}
+    if username:
+        user = User.objects.filter(username=username)[0]
+        context['user'] = user
     return render(req, 'index.html', context=context)
 
 def create_user(req):
     if req.method == 'GET':
-        context = {'title' : 'New User Registration'}
+        context = {'title' : 'New User Registration', 'user' : ''}
         return render(req, 'register.html', context=context)
     user = User()
     user.username     = req.POST['uname']
@@ -31,18 +44,17 @@ def create_user(req):
     user.password     = req.POST['password']
     user.save()
     messages.add_message(req, messages.SUCCESS, 'User registerd successfully')
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/login/')
 
 def login_user(req):
     if req.method == 'GET':
-        context = {'title' : 'Login'}
+        context = {'title' : 'Login', 'user' : ''}
         return render(req, 'login.html', context=context)
 
     user = User.objects.filter(username=req.POST['uname'])
-    print user
-    print type(user)
     if user:
         if user[0].password == req.POST['password']:
+            req.session['username']  = user[0].username
             return HttpResponseRedirect('/')
         else:
             messages.add_message(req, messages.ERROR, 'Username or password does not match')
@@ -50,3 +62,8 @@ def login_user(req):
     else:
         messages.add_message(req, messages.ERROR, 'Username not found')
         return HttpResponseRedirect('/login/')
+
+def logout_user(req):
+    if req.session['username']:
+        del req.session['username']
+    return  HttpResponseRedirect('/')

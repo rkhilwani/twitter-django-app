@@ -23,4 +23,5 @@ urlpatterns = [
     url('^add/', views.add_tweet, name='add'),
     url('^register_new_user/', views.create_user, name='create user'),
     url('^login/', views.login_user, name='login user'),
+    url('^logout/', views.logout_user, name='logout user'),
 ]

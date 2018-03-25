@@ -7,6 +7,7 @@ from django.db import models
 class Post(models.Model):
     ptext = models.CharField(max_length=144)
     cdate = models.DateTimeField(auto_now=True)
+    user  = models.ForeignKey('User', on_delete=models.CASCADE)
 
 class User(models.Model):
     username   = models.CharField(max_length=40)
